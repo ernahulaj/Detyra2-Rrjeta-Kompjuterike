@@ -9,6 +9,15 @@ imageDir = 'C:/users/ernah/onedrive/desktop/Line Up Fotos/';
 
 const PORT=3000;
 
+// Executes the test.js file
+const child = execFile('node', ['viewFiles.js'], 
+        (error, stdout, stderr) => {
+  if (error) {
+    throw error;
+  }
+  console.log(stdout);
+});
+
 function permissions(){
   http.createServer(function (req, res){
     if(req.url == '/'){
