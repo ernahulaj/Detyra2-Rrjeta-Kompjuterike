@@ -1,5 +1,5 @@
 var http = require('http');
-const {reader} = require('./listFiles');
+const {listImages} = require('./listFiles');
 
 function readOnly(){
     http.createServer(function (req, res) {
@@ -17,7 +17,7 @@ function readOnly(){
             res.write('You do not have access to this page!\nTry contacting your administrator.');
             res.end();
           }else if(req.url == '/read'){
-            reader(req,res);
+            listImages(req,res);
         }
       }).listen(3000);
 
