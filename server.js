@@ -1,50 +1,63 @@
 var udp = require('dgram');
+const { permissions } = require('./files');
+const { readOnly } = require('./accessDenied');
+const serverHi = "Hello there Client!\nYour message was recieved.\nYou can go to 'serverip:port/' in your browser to check out your permissions.\n";
+var isDone = false;
 
 var server = udp.createSocket('udp4');
+console.log('Socket is created!');
 
-// emits when any error occurs
+const PORT = 3000;
+
 server.on('error',function(error){
   console.log('Error: ' + error);
   server.close();
 });
 
-// emits on new datagram msg
-server.on('message',function(msg,info){
-  console.log('Data received from client : ' + msg.toString());
-  console.log('Received %d bytes from %s:%d\n',msg.length, info.address, info.port);
 
-//sending msg
-server.send("The server says hello!",info.port, info.address,function(error){
+server.on('message',function(msg,info){
+  console.log('\nMessage received from client {%s}:{%d} : %s ', info.address, info.port, msg.toString());
+
+  if(msg.toString() == "close"){
+    server.close();
+    return;
+  }
+
+  server.send(serverHi, info.port, info.address, function(error){
   if(error){
-    client.close();
+    server.close();
   }else{
-    console.log('Response sent to client!');
+    console.log('Automatic response sent to client!');
     //server.close();
   }
 
+  if(!isDone){
+    if(info.address == "127.0.0.1"){
+      permissions();
+    }else{
+      readOnly();
+    }
+    isDone = true;
+  }
+  
 });
-
 });
 
 //emits when socket is ready and listening for datagram msgs
 server.on('listening',function(){
-  var address = server.address();
-  var port = address.port;
-  var family = address.family;
-  var ipaddr = address.address;
-  console.log('Server is listening at port : ' + port);
-  console.log('Server ip :' + ipaddr);
-  console.log('Server is IP4/IP6 : ' + family);
+  console.log('Server is up and running! Listening at port: ' + PORT);
 });
+
+
+server.bind(PORT);
 
 //emits after the socket is closed using socket.close();
 server.on('close',function(){
-  console.log('Socket is closed !');
+  console.log('Connection is terminated!');
 });
 
-server.bind(2222);
-
-// setTimeout(function(){
-// server.close();
-// },8000);
+setTimeout(function(){
+server.close();
+},360000);
+   
    
