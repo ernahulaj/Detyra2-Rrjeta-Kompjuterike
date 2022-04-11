@@ -1,8 +1,5 @@
 var udp = require('dgram');
 
-// --------------------creating a udp server --------------------
-
-// creating a udp server
 var server = udp.createSocket('udp4');
 
 // emits when any error occurs
