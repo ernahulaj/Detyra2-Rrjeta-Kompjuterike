@@ -3,25 +3,7 @@ var fs = require('fs'),
     path = require('path'),
     url = require('url');
 var imageDir = 'C:/users/ernah/onedrive/desktop/Line Up Fotos/';
- 
-function reader(req,res){
-        listImages(req,res);
-            //read the image using fs and send the image content back in the response
-        if(typeof pic !== 'undefined'){
-            fs.readFile(imageDir + pic, function (err, content) {
-                if (err) {
-                    res.writeHead(400, {'Content-type':'text/html'})
-                    console.log(err);
-                    res.end("No such image");    
-                } else {
-                    //specify that content type in the response will be an image of jpg type
-                    res.writeHead(200,{'Content-type':'image/jpg'});
-                    res.end(content);
-                }
-            });
-        }
-            
-}
+
 
 //list names of img files in html page
 function listImages(req, res){
@@ -33,7 +15,7 @@ if (typeof pic === 'undefined') {
         res.write("List of files in directory:\n");
         var imageLists = '<ul>';
         for (var i=0; i<files.length; i++) {
-            imageLists += '<li><a href="/?image=' + files[i] + '"></a>' + files[i] + '</li>';
+            imageLists += '<li><h1' + files[i] + '"></h1>' + files[i] + '</li>';
         }
         imageLists += '</ul>';
         res.end(imageLists);
@@ -57,6 +39,6 @@ function getImages(imageDir, callback) {
 }
 
 module.exports = {
-    reader, 
+    listImages, 
 }
 
