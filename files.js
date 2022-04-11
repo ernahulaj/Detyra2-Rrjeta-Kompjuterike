@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 const res = require('express/lib/response');
 var formidable = require('formidable');
-const { reader } = require('./listFiles');
+const { listImages } = require('./listFiles');
 url = require('url');
 path = require('path')
 imageDir = 'C:/users/ernah/onedrive/desktop/Line Up Fotos/';
@@ -39,7 +39,7 @@ function permissions(){
         });
    });
      } else if(req.url == '/read'){
-      reader(req,res);
+      listImages(req,res);
      }
   }).listen(PORT);  
 
